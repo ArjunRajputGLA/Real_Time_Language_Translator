@@ -1,0 +1,719 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Translator</title>
+    <link rel="icon" type="image/x-icon" href="Favicon.png">
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0E1117;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding-top: 100px;
+            background-image: url('Grey NN.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        } 
+        h1 { 
+            font-size: 60px;
+            color: rgb(0, 179, 255);
+            margin-bottom: 50px;
+            text-align: center;
+            overflow: hidden;
+            border-right: .15em solid orange;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+            margin: 0 auto;
+            letter-spacing: .15em;
+            z-index: 2;
+            position: relative;
+        }
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: orange; }
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 160px;
+            margin-top: 240px;
+            z-index: 2;
+            position: relative;
+            flex-wrap: wrap;
+        }
+        .big-button {
+            width: 350px;
+            height: 220px;
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #27282d;
+            color: rgb(117, 218, 255);
+            border: none;
+            border-radius: 20px;
+            cursor: pointer; 
+            transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+            box-shadow: 0 5px 15px rgba(254, 234, 234, 0.3);
+            position: relative;
+        }
+        .big-button:hover {
+            background-color: #1e1b1b;
+            box-shadow: 0 5px 15px rgba(54, 206, 233, 0.3);
+            transform: scale(1.05);
+        }
+        .big-button:active {
+            background-color: #3b3939;
+            box-shadow: 0 5px 15px rgba(54, 206, 233, 0.3);
+        }
+        .info-box {
+            position: absolute;
+            bottom: -120px;
+            left: 62%;
+            transform: translateX(-50%);
+            width: 100%; 
+            padding: 20px;
+            background-color: rgba(121, 196, 213, 0.783);
+            color: rgb(18, 18, 18);
+            text-align: center;
+            border-radius: 60px;
+            font-weight: bold;
+            display: none; 
+            z-index: 1;
+        }
+        .info-box:hover {
+            box-shadow: 0 0 15px rgba(129, 232, 255, 0.7);
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: translateX(-60%) scale(1.2);
+            }
+            100% {
+                transform: translateX(-50%) scale(1.05);
+            }
+        }
+        .big-button:hover .info-box {
+            display: block;
+            animation: pulse 1.2s infinite alternate;
+        }
+        .language-selection {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .blink-text {
+            color: rgb(117, 218, 255);
+            margin-right: 20px;
+            font-weight: bolder;
+            font-size: 20px;
+            animation: blink 1.3s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        #languageSelect {
+            padding: 10px;
+            font-size: 16px;
+            background-color: rgb(21, 22, 22);
+            color: rgb(117, 218, 255);
+            border: none;
+            border-radius: 5px;
+            font-weight: bolder;
+            cursor: pointer;
+        }
+        #languageSelect:hover {
+            background-color: rgb(45, 43, 43);
+        }
+        #lang {
+            font-weight: bold;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="language-selection">
+        <span class="blink-text" id="chooseLanguageText">Choose Language:</span>
+        <select id="languageSelect" onchange="changeLanguage()"> 
+            <option id = 'lang' value="en">English</option>
+            <option id = 'lang' value="es">Español</option>
+            <option id = 'lang' value="fr">Français</option>
+            <option id = 'lang' value="de">Deutsch</option>
+            <option id = 'lang' value="ru">Русский</option>
+            <option id = 'lang' value="it">Italiano</option>
+            <option id = 'lang' value="ja">日本語</option>
+            <option id = 'lang' value="zh">中文</option>
+            <option id = 'lang' value="ar">العربية</option>
+            <option id = 'lang' value="pt">Português</option>
+            <option id = 'lang' value="hi">हिन्दी</option>
+            <option id = 'lang' value="ko">한국어</option>
+            <option id = 'lang' value="nl">Nederlands</option>
+            <option id = 'lang' value="sv">Svenska</option>
+            <option id = 'lang' value="pl">Polski</option>
+            <option id = 'lang' value="tr">Türkçe</option>
+            <option id = 'lang' value="vi">Tiếng Việt</option>
+            <option id = 'lang' value="th">ไทย</option>
+            <option id = 'lang' value="id">Bahasa Indonesia</option>
+            <option id = 'lang' value="el">Ελληνικά</option>
+            <option id = 'lang' value="fi">Suomi</option>
+            <option id = 'lang' value="no">Norsk</option>
+            <option id = 'lang' value="da">Dansk</option>
+            <option id = 'lang' value="cs">Čeština</option>
+            <option id = 'lang' value="hu">Magyar</option>
+            <option id = 'lang' value="ro">Română</option>
+            <option id = 'lang' value="uk">Українська</option>
+            <option id = 'lang' value="he">עברית</option>
+            <option id = 'lang' value="fa">فارسی</option>
+            <option id = 'lang' value="bn">বাংলা</option>
+            <option id = 'lang' value="sk">Slovenčina</option>
+            <option id = 'lang' value="hr">Hrvatski</option>
+            <option id = 'lang' value="sr">Српски</option>
+            <option id = 'lang' value="bg">Български</option>
+            <option id = 'lang' value="lt">Lietuvių</option>
+            <option id = 'lang' value="lv">Latviešu</option>
+            <option id = 'lang' value="et">Eesti</option>
+            <option id = 'lang' value="sl">Slovenščina</option>
+            <option id = 'lang' value="ms">Bahasa Melayu</option>
+            <option id = 'lang' value="fil">Filipino</option>
+            <option id = 'lang' value="sw">Kiswahili</option>
+            <option id = 'lang' value="ta">தமிழ்</option>
+            <option id = 'lang' value="ur">اردو</option>
+            <option id = 'lang' value="ml">മലയാളം</option>
+            <option id = 'lang' value="te">తెలుగు</option>
+        </select>
+    </div>
+
+    <h1 id="title"></h1>
+    <div class="button-container">
+        <button class="big-button" onclick="handleClick('Real Time Translation')">
+            Real Time<br>Translation
+            <div class="info-box">Engage in real-time conversations with instant translations</div>
+        </button>
+        <button class="big-button" onclick="handleClick('Speech to Text\nText to Speech')">
+            Text to<br>Speech
+            <div class="info-box">Convert text into natural-sounding speech in various languages</div>
+        </button>
+        <button class="big-button" onclick="handleClick('Txt/PDF/Docx')">
+            Txt / PDF / Docx
+            <div class="info-box">Translate documents in TXT, PDF, and DOCX formats</div>
+        </button>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                title: "🎙️Multilingual Translator🎙️",
+                chooseLanguage: "Choose Language:",
+                realTime: "Real Time<br>Translation",
+                realTimeInfo: "Engage in real-time conversations with instant translations",
+                textToSpeech: "Text to<br>Speech",
+                textToSpeechInfo: "Convert text into natural-sounding speech in various languages",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Translate documents in TXT, PDF, and DOCX formats"
+            },
+            es: {
+                title: "🎙️Traductor Multilingüe🎙️",
+                chooseLanguage: "Elegir Idioma:",
+                realTime: "Traducción en<br>Tiempo Real",
+                realTimeInfo: "Participa en conversaciones en tiempo real con traducciones instantáneas",
+                textToSpeech: "Texto a<br>Voz",
+                textToSpeechInfo: "Convierte texto en voz natural en varios idiomas",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Traduce documentos en formatos TXT, PDF y DOCX"
+            },
+            fr: {
+                title: "🎙️Traducteur Multilingue🎙️",
+                chooseLanguage: "Choisir la Langue:",
+                realTime: "Traduction en<br>Temps Réel",
+                realTimeInfo: "Participez à des conversations en temps réel avec des traductions instantanées",
+                textToSpeech: "Texte vers<br>Parole",
+                textToSpeechInfo: "Convertissez du texte en parole naturelle dans diverses langues",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Traduisez des documents aux formats TXT, PDF et DOCX"
+            },
+            de: {
+                title: "🎙️Mehrsprachiger Übersetzer🎙️",
+                chooseLanguage: "Sprache Wählen:",
+                realTime: "Echtzeit-<br>Übersetzung",
+                realTimeInfo: "Führen Sie Echtzeit-Gespräche mit sofortigen Übersetzungen",
+                textToSpeech: "Text zu<br>Sprache",
+                textToSpeechInfo: "Konvertieren Sie Text in natürlich klingende Sprache in verschiedenen Sprachen",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Übersetzen Sie Dokumente in TXT-, PDF- und DOCX-Formaten"
+            },
+            ru: {
+                title: "🎙️Многоязычный Переводчик🎙️",
+                chooseLanguage: "Выберите Язык:",
+                realTime: "Перевод в<br>Реальном Времени",
+                realTimeInfo: "Участвуйте в разговорах в реальном времени с мгновенным переводом",
+                textToSpeech: "Текст в<br>Речь",
+                textToSpeechInfo: "Преобразуйте текст в естественно звучащую речь на разных языках",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Переводите документы в форматах TXT, PDF и DOCX"
+            },
+            it: {
+                title: "🎙️Traduttore Multilingue🎙️",
+                chooseLanguage: "Scegli la Lingua:",
+                realTime: "Traduzione in<br>Tempo Reale",
+                realTimeInfo: "Partecipa a conversazioni in tempo reale con traduzioni istantanee",
+                textToSpeech: "Testo in<br>Voce",
+                textToSpeechInfo: "Converti il testo in voce naturale in varie lingue",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Traduci documenti nei formati TXT, PDF e DOCX"
+            },
+            ja: {
+                title: "🎙️多言語翻訳者🎙️",
+                chooseLanguage: "言語を選択:",
+                realTime: "リアルタイム<br>翻訳",
+                realTimeInfo: "リアルタイムの会話に即時翻訳で参加",
+                textToSpeech: "テキストから<br>スピーチ",
+                textToSpeechInfo: "テキストをさまざまな言語で自然な音声に変換",
+                documents: "テキスト / PDF / Docx",
+                documentsInfo: "TXT、PDF、およびDOCX形式でドキュメントを翻訳"
+            },
+            zh: {
+                title: "🎙️多语言翻译器🎙️",
+                chooseLanguage: "选择语言:",
+                realTime: "实时<br>翻译",
+                realTimeInfo: "参与实时对话，进行即时翻译",
+                textToSpeech: "文本转<br>语音",
+                textToSpeechInfo: "将文本转换为自然语音，支持多种语言",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "翻译TXT、PDF和DOCX格式的文档"
+            },
+            ar: {
+                title: "🎙️مترجم متعدد اللغات🎙️",
+                chooseLanguage: "اختر اللغة:",
+                realTime: "ترجمة في<br>الوقت الحقيقي",
+                realTimeInfo: "المشاركة في المحادثات الفورية مع الترجمات الفورية",
+                textToSpeech: "نص إلى<br>كلام",
+                textToSpeechInfo: "تحويل النص إلى كلام طبيعي بلغات متعددة",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "ترجمة المستندات بتنسيقات TXT, PDF و DOCX"
+            },
+            pt: {
+                title: "🎙️Tradutor Multilíngue🎙️",
+                chooseLanguage: "Escolher Idioma:",
+                realTime: "Tradução em<br>Tempo Real",
+                realTimeInfo: "Participe em conversas em tempo real com traduções instantâneas",
+                textToSpeech: "Texto para<br>Fala",
+                textToSpeechInfo: "Converta texto em fala natural em vários idiomas",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Traduza documentos nos formatos TXT, PDF e DOCX"
+            },
+            hi: {
+                title: "🎙️बहुभाषी अनुवादक🎙️",
+                chooseLanguage: "भाषा चुनें:",
+                realTime: "रीयल टाइम<br>अनुवाद",
+                realTimeInfo: "तत्काल अनुवाद के साथ रीयल टाइम बातचीत में शामिल हों",
+                textToSpeech: "टेक्स्ट से<br>स्पीच",
+                textToSpeechInfo: "विभिन्न भाषाओं में टेक्स्ट को प्राकृतिक आवाज में बदलें",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF और DOCX प्रारूपों में दस्तावेजों का अनुवाद करें"
+            },
+            ko: {
+                title: "🎙️다국어 번역기🎙️",
+                chooseLanguage: "언어 선택:",
+                realTime: "실시간<br>번역",
+                realTimeInfo: "실시간 대화에 즉각적인 번역으로 참여하세요",
+                textToSpeech: "텍스트를<br>음성으로",
+                textToSpeechInfo: "다양한 언어로 텍스트를 자연스러운 음성으로 변환",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF 및 DOCX 형식의 문서 번역"
+            },
+            nl: {
+                title: "🎙️Meertalige Vertaler🎙️",
+                chooseLanguage: "Kies Taal:",
+                realTime: "Realtime<br>Vertaling",
+                realTimeInfo: "Neem deel aan realtime gesprekken met directe vertalingen",
+                textToSpeech: "Tekst naar<br>Spraak",
+                textToSpeechInfo: "Zet tekst om in natuurlijk klinkende spraak in verschillende talen",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Vertaal documenten in TXT-, PDF- en DOCX-formaten"
+            },
+            sv: {
+                title: "🎙️Flerspråkig Översättare🎙️",
+                chooseLanguage: "Välj Språk:",
+                realTime: "Realtids<br>Översättning",
+                realTimeInfo: "Delta i realtidssamtal med omedelbara översättningar",
+                textToSpeech: "Text till<br>Tal",
+                textToSpeechInfo: "Konvertera text till naturligt låtande tal på olika språk",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Översätt dokument i TXT-, PDF- och DOCX-format"
+            },
+            pl: {
+                title: "🎙️Tłumacz Wielojęzyczny🎙️",
+                chooseLanguage: "Wybierz Język:",
+                realTime: "Tłumaczenie<br>w Czasie Rzeczywistym",
+                realTimeInfo: "Uczestnictwo w rozmowach w czasie rzeczywistym z natychmiastowymi tłumaczeniami",
+                textToSpeech: "Tekst na<br>Mowę",
+                textToSpeechInfo: "Konwersja tekstu na naturalnie brzmiącą mowę w różnych językach",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Tłumaczenie dokumentów w formatach TXT, PDF i DOCX"
+            },
+            tr: {
+                title: "🎙️Çok Dilli Çevirmen🎙️",
+                chooseLanguage: "Dil Seçin:",
+                realTime: "Gerçek Zamanlı<br>Çeviri",
+                realTimeInfo: "Anlık çevirilerle gerçek zamanlı sohbetlere katılın",
+                textToSpeech: "Metinden<br>Konuşmaya",
+                textToSpeechInfo: "Metni çeşitli dillerde doğal ses tonuyla konuşmaya dönüştürün",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF ve DOCX formatlarındaki belgeleri çevirin"
+            },
+            vi: {
+                title: "🎙️Trình Dịch Đa Ngôn Ngữ🎙️",
+                chooseLanguage: "Chọn Ngôn Ngữ:",
+                realTime: "Dịch<br>Thời Gian Thực",
+                realTimeInfo: "Tham gia vào các cuộc hội thoại thời gian thực với bản dịch tức thì",
+                textToSpeech: "Văn Bản thành<br>Giọng Nói",
+                textToSpeechInfo: "Chuyển đổi văn bản thành giọng nói tự nhiên trong nhiều ngôn ngữ khác nhau",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Dịch tài liệu ở định dạng TXT, PDF và DOCX"
+            },
+            th: {
+                title: "🎙️นักแปลหลายภาษา🎙️",
+                chooseLanguage: "เลือกภาษา:",
+                realTime: "การแปล<br>แบบเรียลไทม์",
+                realTimeInfo: "เข้าร่วมการสนทนาแบบเรียลไทม์ด้วยการแปลทันที",
+                textToSpeech: "ข้อความเป็น<br>เสียงพูด",
+                textToSpeechInfo: "แปลงข้อความเป็นเสียงพูดที่เป็นธรรมชาติในหลายภาษา",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "แปลเอกสารในรูปแบบ TXT, PDF และ DOCX"
+            },
+            id: {
+                title: "🎙️Penerjemah Multibahasa🎙️",
+                chooseLanguage: "Pilih Bahasa:",
+                realTime: "Terjemahan<br>Waktu Nyata",
+                realTimeInfo: "Berpartisipasi dalam percakapan waktu nyata dengan terjemahan instan",
+                textToSpeech: "Teks ke<br>Ucapan",
+                textToSpeechInfo: "Ubah teks menjadi ucapan alami dalam berbagai bahasa",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Terjemahkan dokumen dalam format TXT, PDF, dan DOCX"
+            },
+            el: {
+                title: "🎙️Πολύγλωσσος Μεταφραστής🎙️",
+                chooseLanguage: "Επιλέξτε Γλώσσα:",
+                realTime: "Μετάφραση σε<br>Πραγματικό Χρόνο",
+                realTimeInfo: "Συμμετοχή σε συνομιλίες σε πραγματικό χρόνο με άμεσες μεταφράσεις",
+                textToSpeech: "Κείμενο σε<br>Ομιλία",
+                textToSpeechInfo: "Μετατροπή κειμένου σε φυσική ομιλία σε διάφορες γλώσσες",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Μετάφραση εγγράφων σε μορφές TXT, PDF και DOCX"
+            },
+            fi: {
+                title: "🎙️Monikielinen kääntäjä🎙️",
+                chooseLanguage: "Valitse kieli:",
+                realTime: "Reaaliaikainen<br>käännös",
+                realTimeInfo: "Osallistu reaaliaikaisiin keskusteluihin välittömillä käännöksillä",
+                textToSpeech: "Teksti<br>puheeksi",
+                textToSpeechInfo: "Muunna teksti luonnolliseksi puheeksi eri kielillä",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Käännä asiakirjoja TXT-, PDF- ja DOCX-muodoissa"
+            },
+            no: {
+                title: "🎙️Flerspråklig oversetter🎙️",
+                chooseLanguage: "Velg språk:",
+                realTime: "Sanntids<br>oversettelse",
+                realTimeInfo: "Delta i sanntidssamtaler med øyeblikkelige oversettelser",
+                textToSpeech: "Tekst til<br>tale",
+                textToSpeechInfo: "Konverter tekst til naturlig tale på forskjellige språk",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Oversett dokumenter i TXT-, PDF- og DOCX-formater"
+            },
+            da: {
+                title: "🎙️Flersproget oversætter🎙️",
+                chooseLanguage: "Vælg sprog:",
+                realTime: "Realtids<br>oversættelse",
+                realTimeInfo: "Deltag i realtidssamtaler med øjeblikkelige oversættelser",
+                textToSpeech: "Tekst til<br>tale",
+                textToSpeechInfo: "Konverter tekst til naturlig tale på forskellige sprog",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Oversæt dokumenter i TXT-, PDF- og DOCX-formater"
+            },
+            cs: {
+                title: "🎙️Vícejazyčný překladatel🎙️",
+                chooseLanguage: "Vyberte jazyk:",
+                realTime: "Překlad v<br>reálném čase",
+                realTimeInfo: "Účastněte se konverzací v reálném čase s okamžitými překlady",
+                textToSpeech: "Text na<br>řeč",
+                textToSpeechInfo: "Převeďte text na přirozeně znějící řeč v různých jazycích",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Překládejte dokumenty ve formátech TXT, PDF a DOCX"
+            },
+            hu: {
+                title: "🎙️Többnyelvű fordító🎙️",
+                chooseLanguage: "Válasszon nyelvet:",
+                realTime: "Valós idejű<br>fordítás",
+                realTimeInfo: "Vegyen részt valós idejű beszélgetésekben azonnali fordításokkal",
+                textToSpeech: "Szövegből<br>beszéd",
+                textToSpeechInfo: "Alakítson át szöveget természetes hangzású beszéddé különböző nyelveken",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Fordítson dokumentumokat TXT, PDF és DOCX formátumokban"
+            },
+            ro: {
+                title: "🎙️Traducător multilingv🎙️",
+                chooseLanguage: "Alegeți limba:",
+                realTime: "Traducere în<br>timp real",
+                realTimeInfo: "Participați la conversații în timp real cu traduceri instantanee",
+                textToSpeech: "Text în<br>vorbire",
+                textToSpeechInfo: "Convertiți textul în vorbire naturală în diferite limbi",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Traduceți documente în formate TXT, PDF și DOCX"
+            },
+            uk: {
+                title: "🎙️Багатомовний перекладач🎙️",
+                chooseLanguage: "Виберіть мову:",
+                realTime: "Переклад у<br>реальному часі",
+                realTimeInfo: "Беріть участь у розмовах у реальному часі з миттєвими перекладами",
+                textToSpeech: "Текст у<br>мовлення",
+                textToSpeechInfo: "Перетворюйте текст у природне мовлення різними мовами",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Перекладайте документи у форматах TXT, PDF та DOCX"
+            },
+            he: {
+                title: "🎙️מתורגמן רב-לשוני🎙️",
+                chooseLanguage: "בחר שפה:",
+                realTime: "תרגום<br>בזמן אמת",
+                realTimeInfo: "השתתף בשיחות בזמן אמת עם תרגומים מיידיים",
+                textToSpeech: "טקסט<br>לדיבור",
+                textToSpeechInfo: "המר טקסט לדיבור טבעי במגוון שפות",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "תרגם מסמכים בפורמטים TXT, PDF ו-DOCX"
+            },
+            fa: {
+                title: "🎙️مترجم چندزبانه🎙️",
+                chooseLanguage: "انتخاب زبان:",
+                realTime: "ترجمه<br>بلادرنگ",
+                realTimeInfo: "در مکالمات بلادرنگ با ترجمه‌های فوری شرکت کنید",
+                textToSpeech: "متن به<br>گفتار",
+                textToSpeechInfo: "متن را به گفتار طبیعی در زبان‌های مختلف تبدیل کنید",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "اسناد را در قالب‌های TXT، PDF و DOCX ترجمه کنید"
+            },
+            bn: {
+                title: "🎙️বহুভাষিক অনুবাদক🎙️",
+                chooseLanguage: "ভাষা নির্বাচন করুন:",
+                realTime: "রিয়েল-টাইম<br>অনুবাদ",
+                realTimeInfo: "তাৎক্ষণিক অনুবাদের সাথে রিয়েল-টাইম কথোপকথনে অংশ নিন",
+                textToSpeech: "টেক্সট থেকে<br>স্পিচ",
+                textToSpeechInfo: "বিভিন্ন ভাষায় টেক্সটকে প্রাকৃতিক স্পিচে রূপান্তর করুন",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF এবং DOCX ফর্ম্যাটে ডকুমেন্ট অনুবাদ করুন"
+            },
+            sk: {
+                title: "🎙️Viacjazyčný prekladač🎙️",
+                chooseLanguage: "Vyberte jazyk:",
+                realTime: "Preklad v<br>reálnom čase",
+                realTimeInfo: "Zúčastnite sa konverzácií v reálnom čase s okamžitými prekladmi",
+                textToSpeech: "Text na<br>reč",
+                textToSpeechInfo: "Preveďte text na prirodzene znejúcu reč v rôznych jazykoch",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Prekladajte dokumenty vo formátoch TXT, PDF a DOCX"
+            },
+            hr: {
+                title: "🎙️Višejezični prevoditelj🎙️",
+                chooseLanguage: "Odaberite jezik:",
+                realTime: "Prijevod u<br>stvarnom vremenu",
+                realTimeInfo: "Sudjelujte u razgovorima u stvarnom vremenu s trenutnim prijevodima",
+                textToSpeech: "Tekst u<br>govor",
+                textToSpeechInfo: "Pretvorite tekst u prirodni govor na različitim jezicima",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Prevodite dokumente u TXT, PDF i DOCX formatima"
+            },
+            sr: {
+                title: "🎙️Вишејезични преводилац🎙️",
+                chooseLanguage: "Изаберите језик:",
+                realTime: "Превод у<br>реалном времену",
+                realTimeInfo: "Учествујте у разговорима у реалном времену са тренутним преводима",
+                textToSpeech: "Текст у<br>говор",
+                textToSpeechInfo: "Претворите текст у природни говор на различитим језицима",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Преводите документе у ТXT, PDF и DOCX форматима"
+            },
+            bg: {
+                title: "🎙️Многоезичен преводач🎙️",
+                chooseLanguage: "Изберете език:",
+                realTime: "Превод в<br>реално време",
+                realTimeInfo: "Участвайте в разговори в реално време с мигновени преводи",
+                textToSpeech: "Текст в<br>реч",
+                textToSpeechInfo: "Преобразувайте текст в естествена реч на различни езици",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Превеждайте документи в TXT, PDF и DOCX формати"
+            },
+            lt: {
+                title: "🎙️Daugiakalbis vertėjas🎙️",
+                chooseLanguage: "Pasirinkite kalbą:",
+                realTime: "Vertimas<br>realiu laiku",
+                realTimeInfo: "Dalyvaukite pokalbiuose realiu laiku su momentiniais vertimais",
+                textToSpeech: "Tekstas į<br>kalbą",
+                textToSpeechInfo: "Konvertuokite tekstą į natūraliai skambančią kalbą įvairiomis kalbomis",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Versti dokumentus TXT, PDF ir DOCX formatais"
+            },
+            lv: {
+                title: "🎙️Daudzvalodu tulkotājs🎙️",
+                chooseLanguage: "Izvēlieties valodu:",
+                realTime: "Tulkošana<br>reālajā laikā",
+                realTimeInfo: "Piedalieties sarunās reālajā laikā ar tūlītējiem tulkojumiem",
+                textToSpeech: "Teksts<br>runā",
+                textToSpeechInfo: "Pārveidojiet tekstu dabiskā runā dažādās valodās",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Tulkojiet dokumentus TXT, PDF un DOCX formātos"
+            },
+            et: {
+                title: "🎙️Mitmekeelne tõlkija🎙️",
+                chooseLanguage: "Valige keel:",
+                realTime: "Reaalajas<br>tõlge",
+                realTimeInfo: "Osalege reaalajas vestlustes koheste tõlgetega",
+                textToSpeech: "Tekst<br>kõneks",
+                textToSpeechInfo: "Teisendage tekst loomulikuks kõneks erinevates keeltes",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Tõlkige dokumente TXT, PDF ja DOCX formaatides"
+            },
+            sl: {
+                title: "🎙️Večjezični prevajalnik🎙️",
+                chooseLanguage: "Izberite jezik:",
+                realTime: "Prevajanje v<br>realnem času",
+                realTimeInfo: "Sodelujte v pogovorih v realnem času s takojšnjimi prevodi",
+                textToSpeech: "Besedilo v<br>govor",
+                textToSpeechInfo: "Pretvorite besedilo v naraven govor v različnih jezikih",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Prevajajte dokumente v formatih TXT, PDF in DOCX"
+            },
+            ms: {
+                title: "🎙️Penterjemah Pelbagai Bahasa🎙️",
+                chooseLanguage: "Pilih Bahasa:",
+                realTime: "Terjemahan<br>Masa Nyata",
+                realTimeInfo: "Sertai perbualan masa nyata dengan terjemahan serta-merta",
+                textToSpeech: "Teks kepada<br>Ucapan",
+                textToSpeechInfo: "Tukar teks kepada ucapan semula jadi dalam pelbagai bahasa",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Terjemah dokumen dalam format TXT, PDF dan DOCX"
+            },
+            fil: {
+                title: "🎙️Multilinggwal na Tagapagsalin🎙️",
+                chooseLanguage: "Piliin ang Wika:",
+                realTime: "Real-time na<br>Pagsasalin",
+                realTimeInfo: "Lumahok sa real-time na pag-uusap gamit ang instant na pagsasalin",
+                textToSpeech: "Teksto sa<br>Pananalita",
+                textToSpeechInfo: "I-convert ang teksto sa natural na pananalita sa iba't ibang wika",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Magsalin ng mga dokumento sa TXT, PDF, at DOCX na format"
+            },
+            sw: {
+                title: "🎙️Mfasiri wa Lugha Nyingi🎙️",
+                chooseLanguage: "Chagua Lugha:",
+                realTime: "Tafsiri ya<br>Wakati Halisi",
+                realTimeInfo: "Shiriki katika mazungumzo ya wakati halisi na tafsiri za papo hapo",
+                textToSpeech: "Maandishi<br>kuwa Sauti",
+                textToSpeechInfo: "Geuza maandishi kuwa sauti ya kawaida katika lugha mbalimbali",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "Tafsiri nyaraka katika miundo ya TXT, PDF na DOCX"
+            },
+            ta: {
+                title: "🎙️பல மொழி மொழிபெயர்ப்பாளர்🎙️",
+                chooseLanguage: "மொழியைத் தேர்ந்தெடுக்கவும்:",
+                realTime: "நேரடி<br>மொழிபெயர்ப்பு",
+                realTimeInfo: "உடனடி மொழிபெயர்ப்புகளுடன் நேரடி உரையாடல்களில் பங்கேற்கவும்",
+                textToSpeech: "உரையில் இருந்து<br>பேச்சு",
+                textToSpeechInfo: "உரையை பல்வேறு மொழிகளில் இயல்பான பேச்சாக மாற்றவும்",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF மற்றும் DOCX வடிவங்களில் ஆவணங்களை மொழிபெயர்க்கவும்"
+            },
+            ur: {
+                title: "🎙️کثیر لسانی مترجم🎙️",
+                chooseLanguage: "زبان منتخب کریں:",
+                realTime: "حقیقی وقت<br>کا ترجمہ",
+                realTimeInfo: "فوری ترجمہ کے ساتھ حقیقی وقت کی گفتگو میں شامل ہوں",
+                textToSpeech: "متن سے<br>تقریر",
+                textToSpeechInfo: "متن کو مختلف زبانوں میں قدرتی تقریر میں تبدیل کریں",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT، PDF اور DOCX فارمیٹس میں دستاویزات کا ترجمہ کریں"
+            },
+            ml: {
+                title: "🎙️ബഹുഭാഷാ വിവർത്തകൻ🎙️",
+                chooseLanguage: "ഭാഷ തിരഞ്ഞെടുക്കുക:",
+                realTime: "യഥാർത്ഥ സമയ<br>വിവർത്തനം",
+                realTimeInfo: "ഉടനടി വിവർത്തനങ്ങളോടെ യഥാർത്ഥ സമയ സംഭാഷണങ്ങളിൽ പങ്കെടുക്കുക",
+                textToSpeech: "ടെക്സ്റ്റ് ടു<br>സ്പീച്ച്",
+                textToSpeechInfo: "ടെക്സ്റ്റ് വിവിധ ഭാഷകളിൽ സ്വാഭാവിക സംസാരമാക്കി മാറ്റുക",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF, DOCX ഫോർമാറ്റുകളിൽ രേഖകൾ വിവർത്തനം ചെയ്യുക"
+            },
+            te: {
+                title: "🎙️బహుభాషా అనువాదకుడు🎙️",
+                chooseLanguage: "భాషను ఎంచుకోండి:",
+                realTime: "రియల్-టైమ్<br>అనువాదం",
+                realTimeInfo: "తక్షణ అనువాదాలతో రియల్-టైమ్ సంభాషణలలో పాల్గొనండి",
+                textToSpeech: "టెక్స్ట్ నుండి<br>స్పీచ్",
+                textToSpeechInfo: "టెక్స్ట్‌ను వివిధ భాషలలో సహజమైన ప్రసంగంగా మార్చండి",
+                documents: "Txt / PDF / Docx",
+                documentsInfo: "TXT, PDF మరియు DOCX ఫార్మాట్‌లలో పత్రాలను అనువదించండి"
+            }
+
+        };
+
+        let i = 0;
+        let currentTitle = '';
+
+        function changeLanguage() {
+            const lang = document.getElementById('languageSelect').value;
+            const t = translations[lang];
+
+            document.getElementById('chooseLanguageText').textContent = t.chooseLanguage;
+            document.querySelectorAll('.big-button')[0].innerHTML = `
+                ${t.realTime}
+                <div class="info-box">${t.realTimeInfo}</div>
+            `;
+            document.querySelectorAll('.big-button')[1].innerHTML = `
+                ${t.textToSpeech}
+                <div class="info-box">${t.textToSpeechInfo}</div>
+            `;
+            document.querySelectorAll('.big-button')[2].innerHTML = `
+                ${t.documents}
+                <div class="info-box">${t.documentsInfo}</div>
+            `;
+
+            i = 0;
+            currentTitle = t.title;
+            document.getElementById("title").innerHTML = '';
+            typeWriter();
+        }
+
+        function typeWriter() {
+            if (i < currentTitle.length) {
+                document.getElementById("title").innerHTML += currentTitle.charAt(i);
+                i++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+
+        function handleClick(buttonName) {
+            if (buttonName === 'Speech to Text\nText to Speech' || buttonName === 'Txt/PDF/Docx') {
+                window.open('http://localhost:8501/', '_blank');
+            }
+        }
+
+        window.onload = function() {
+            changeLanguage(); 
+        };
+    </script>
+</body>
+</html>
